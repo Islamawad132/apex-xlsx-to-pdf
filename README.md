@@ -8,6 +8,52 @@ Convert Excel (XLSX) files to PDF directly from Oracle APEX with a single click.
 
 ---
 
+## Try It Now! (Demo API)
+
+We provide a **free demo API** for testing. Limited to **5 requests per IP per day**.
+
+| Endpoint | URL |
+|----------|-----|
+| **API Base** | `http://34.60.184.196:5000` |
+| **Convert** | `http://34.60.184.196:5000/convert` |
+| **Health Check** | `http://34.60.184.196:5000/health` |
+| **Check Usage** | `http://34.60.184.196:5000/usage` |
+
+### Quick Test with cURL
+
+```bash
+curl -X POST -F "file=@your_file.xlsx" http://34.60.184.196:5000/convert --output output.pdf
+```
+
+### Quick Test in APEX
+
+Add this JavaScript to a button's Dynamic Action:
+
+```javascript
+fetch('#APP_FILES#your_file.xlsx')
+  .then(res => res.blob())
+  .then(blob => {
+    var formData = new FormData();
+    formData.append('file', blob, 'file.xlsx');
+    return fetch('http://34.60.184.196:5000/convert', {
+      method: 'POST',
+      body: formData
+    });
+  })
+  .then(res => res.blob())
+  .then(blob => {
+    var url = window.URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'report.pdf';
+    a.click();
+  });
+```
+
+> **Note:** For production use, deploy your own server for unlimited conversions.
+
+---
+
 ## Features
 
 - Convert Excel files to PDF with full formatting preservation
